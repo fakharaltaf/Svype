@@ -105,9 +105,9 @@ export default function JobDetailsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-muted/20 pb-24">
       {/* Header */}
-      <header className="p-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
+      <header className="px-4 sm:px-6 py-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
         <div className="flex items-center justify-between">
-          <Button variant="ghost" size="icon" onClick={() => router.back()}>
+          <Button variant="ghost" size="icon" onClick={() => router.back()} className="flex-shrink-0">
             <ChevronLeft className="w-5 h-5" />
           </Button>
           <div className="flex gap-2">
@@ -127,25 +127,25 @@ export default function JobDetailsPage() {
       </header>
 
       {/* Content */}
-      <div className="flex-1 p-4 space-y-4 max-w-4xl mx-auto w-full">
+      <div className="flex-1 px-4 sm:px-6 py-4 sm:py-6 space-y-4 max-w-4xl mx-auto w-full">
         {/* Company Header */}
         <Card className="border-2">
-          <CardContent className="p-6">
-            <div className="flex items-start gap-4">
-              <Avatar className="w-16 h-16 border-2">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row items-start gap-3 sm:gap-4">
+              <Avatar className="w-12 h-12 sm:w-16 sm:h-16 border-2 flex-shrink-0">
                 <AvatarFallback className="bg-gradient-to-br from-primary to-primary/60 text-primary-foreground text-xl">
                   {job.company.charAt(0)}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex-1">
-                <h1 className="text-2xl font-bold mb-1">{job.title}</h1>
-                <p className="text-lg text-muted-foreground font-medium mb-3">{job.company}</p>
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="outline" className="gap-1">
+              <div className="flex-1 min-w-0">
+                <h1 className="text-xl sm:text-2xl font-bold mb-1">{job.title}</h1>
+                <p className="text-base sm:text-lg text-muted-foreground font-medium mb-3 truncate">{job.company}</p>
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                  <Badge variant="outline" className="gap-1 text-xs">
                     <MapPin className="w-3 h-3" />
-                    {job.location}
+                    <span className="truncate max-w-[100px] sm:max-w-full">{job.location}</span>
                   </Badge>
-                  <Badge variant="outline" className="gap-1">
+                  <Badge variant="outline" className="gap-1 text-xs">
                     <Briefcase className="w-3 h-3" />
                     {job.type}
                   </Badge>
@@ -165,21 +165,21 @@ export default function JobDetailsPage() {
 
         {/* About the Role */}
         <Card className="border-2">
-          <CardContent className="p-6 space-y-4">
-            <h2 className="text-xl font-bold">About the Role</h2>
-            <p className="text-muted-foreground leading-relaxed">{job.description}</p>
+          <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+            <h2 className="text-lg sm:text-xl font-bold">About the Role</h2>
+            <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{job.description}</p>
           </CardContent>
         </Card>
 
         {/* Requirements */}
         <Card className="border-2">
-          <CardContent className="p-6 space-y-4">
-            <h2 className="text-xl font-bold">Requirements</h2>
-            <ul className="space-y-3">
+          <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+            <h2 className="text-lg sm:text-xl font-bold">Requirements</h2>
+            <ul className="space-y-2 sm:space-y-3">
               {job.requirements.map((req, index) => (
-                <li key={index} className="flex items-start gap-3">
-                  <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-muted-foreground">{req}</span>
+                <li key={index} className="flex items-start gap-2 sm:gap-3">
+                  <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-primary mt-0.5 flex-shrink-0" />
+                  <span className="text-sm sm:text-base text-muted-foreground">{req}</span>
                 </li>
               ))}
             </ul>
@@ -188,11 +188,11 @@ export default function JobDetailsPage() {
 
         {/* Company Info */}
         <Card className="border-2">
-          <CardContent className="p-6 space-y-4">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xl font-bold">About {job.company}</h2>
-              <Button variant="ghost" size="sm" onClick={() => router.push(`/protected/company/${job.company.toLowerCase().replace(/\s+/g, '-')}`)}>
-                View Profile <ExternalLink className="w-4 h-4 ml-1" />
+          <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+              <h2 className="text-lg sm:text-xl font-bold">About {job.company}</h2>
+              <Button variant="ghost" size="sm" onClick={() => router.push(`/protected/company/${job.company.toLowerCase().replace(/\s+/g, '-')}`)} className="self-start sm:self-auto text-xs sm:text-sm">
+                View Profile <ExternalLink className="w-3 h-3 sm:w-4 sm:h-4 ml-1" />
               </Button>
             </div>
             <div className="flex items-start gap-3">

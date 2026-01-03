@@ -62,20 +62,21 @@ export default function CompanyPostsPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <header className="p-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container mx-auto flex items-center gap-3">
-          <Button variant="ghost" size="icon" onClick={() => router.back()}>
+      <header className="px-4 sm:px-6 py-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
+        <div className="container mx-auto flex items-center gap-2 sm:gap-3">
+          <Button variant="ghost" size="icon" onClick={() => router.back()} className="flex-shrink-0">
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-2xl font-bold">Posts & Blogs</h1>
-          <Button size="sm" className="ml-auto gap-2" onClick={() => setShowCreatePost(!showCreatePost)}>
-            <Plus className="w-4 h-4" />
-            Create Post
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold flex-1">Posts & Blogs</h1>
+          <Button size="sm" className="gap-2 text-xs sm:text-sm" onClick={() => setShowCreatePost(!showCreatePost)}>
+            <Plus className="w-3 h-3 sm:w-4 sm:h-4" />
+            <span className="hidden sm:inline">Create Post</span>
+            <span className="sm:hidden">New</span>
           </Button>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 max-w-4xl space-y-6">
+      <main className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 max-w-4xl space-y-4 sm:space-y-6">
         {/* Create Post Form */}
         {showCreatePost && (
           <Card className="border-2 border-primary/20">

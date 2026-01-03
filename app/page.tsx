@@ -110,12 +110,12 @@ export default function Home() {
         <div className="space-y-3">
           <div className="flex justify-center">
             <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/60 rounded-3xl flex items-center justify-center text-primary-foreground shadow-xl">
-              <Zap size={32} />
+              <Briefcase size={32} />
             </div>
           </div>
-          <h1 className="text-4xl font-extrabold tracking-tight text-balance">Talash</h1>
+          <h1 className="text-4xl font-extrabold tracking-tight text-balance">SVYPE</h1>
           <p className="text-muted-foreground text-base text-pretty max-w-2xl mx-auto">
-            Revolutionary job platform connecting talent with opportunities. Swipe to get started.
+            AI-powered job hunting platform. Swipe your way to your dream career.
           </p>
         </div>
 

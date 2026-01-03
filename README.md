@@ -1,159 +1,217 @@
-# Talash - Job Application Prototype
+# SVYPE - AI-Powered Job Matching Platform
 
-A Tinder-style job swiping application built with Next.js. This is a **prototype version** using mock data for demonstration purposes.
+> A modern job application platform combining Tinder-style swiping with AI-powered matching, career coaching, and intelligent application management.
 
-## 🎯 Features
+## ✨ Key Features
 
-- **Swipe Interface**: Tinder-style job swiping with smooth animations
-- **Dashboard**: Track your applications and their status
-- **Profile**: View your career goals and interests
-- **Bottom Navigation**: Easy navigation between main app sections
+### 🎯 For Job Seekers
+- **AI Job Matching** - Swipe through personalized job recommendations
+- **CV Generation** - AI-powered CV creation with 4 professional templates
+- **Cover Letter Writer** - Generate tailored cover letters with tone options
+- **Pre-Screening Quizzes** - Complete assessments with instant feedback
+- **AI Onboarding** - Conversational chat to understand your career goals
+- **Smart Dashboard** - Track applications and interview progress
+- **Tutorial System** - Interactive guidance for first-time users
+- **Dark Mode** - Comfortable viewing in any lighting
 
-## 🚀 Quick Start
+### 💼 For Employers
+- **Smart Job Posting** - Create listings with pre-screening options
+- **Quiz Builder** - Custom assessment creation tool
+- **AI Shortlisting** - View candidates ranked by match score (up to 94%)
+- **Interview Analysis** - AI-powered behavioral and authenticity scoring
+- **Candidate Management** - Bulk actions and status tracking
+- **Company Profiles** - 3-step onboarding wizard
 
-1. **Install dependencies**:
+## 🛠 Tech Stack
+
+| Category | Technology |
+|----------|-----------|
+| **Framework** | Next.js 15 (App Router) |
+| **Language** | TypeScript |
+| **Styling** | Tailwind CSS + shadcn/ui |
+| **Database** | Supabase (PostgreSQL) |
+| **Auth** | Supabase Auth |
+| **Package Manager** | pnpm |
+| **Icons** | Lucide React |
+| **Animations** | tw-animate-css |
+
+## 📁 Project Structure
+
+```
+svype-job-app/
+├── app/                    # Next.js 15 App Router
+│   ├── auth/              # Login, signup pages
+│   ├── protected/         # Job seeker pages (dashboard, swipe, profile, etc.)
+│   ├── company/           # Employer pages (dashboard, post-job, AI features)
+│   └── api/               # API routes
+├── components/            # Reusable React components
+│   ├── ui/               # shadcn/ui components
+│   ├── tutorial-overlay.tsx
+│   ├── empty-state.tsx
+│   └── loading-skeletons.tsx
+├── lib/                   # Utilities and mock data
+│   ├── supabase/         # Supabase configuration
+│   ├── utils.ts
+│   └── mock-data.ts
+├── database/              # SQL schemas and seeds
+├── docs/                  # Documentation
+│   ├── PHASE_2_COMPLETE.md
+│   ├── PHASE_3A_COMPLETE.md
+│   └── PROJECT_STRUCTURE.md
+└── public/                # Static assets
+
+```
+
+See [docs/PROJECT_STRUCTURE.md](docs/PROJECT_STRUCTURE.md) for detailed documentation.
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Node.js 18+ 
+- pnpm (recommended) or npm
+
+### Installation
+
+1. **Clone the repository**
    ```bash
-   npm install
+   git clone <repository-url>
+   cd svype-job-app
    ```
 
-2. **Run the development server**:
+2. **Install dependencies**
    ```bash
-   npm run dev
+   pnpm install
    ```
 
-3. **Open the app**:
+3. **Set up environment variables**
+   ```bash
+   cp .env.local.example .env.local
+   ```
+   
+   Edit `.env.local` with your Supabase credentials:
+   ```env
+   NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
+   NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+4. **Run database migrations**
+   ```bash
+   # Run in order
+   psql -f database/001_initial_schema.sql
+   psql -f database/002_seed_jobs.sql
+   ```
+
+5. **Start development server**
+   ```bash
+   pnpm dev
+   ```
+
+6. **Open the app**
+   
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 📝 Prototype Notes
+## 📱 Usage Guide
 
-This version uses **mock data stored in localStorage** instead of a real backend. This means:
+### Job Seeker Flow
+1. **Sign Up** → Create account
+2. **Onboarding** → Chat with AI to set preferences
+3. **Swipe** → Browse jobs (swipe right to apply, left to pass)
+4. **Dashboard** → Track your applications
+5. **Profile** → Generate CV/Cover Letter
 
-- ✅ No backend setup required
-- ✅ No API keys needed
-- ✅ Works completely offline
-- ✅ Perfect for prototyping and demonstrations
-- ⚠️ Data resets when localStorage is cleared
-- ⚠️ No real authentication (any credentials work)
+### Employer Flow
+1. **Company Onboarding** → Set up profile
+2. **Post Job** → Create listing with pre-screening quiz
+3. **Add Quiz** → Build custom questions
+4. **AI Shortlist** → Review ranked candidates
+5. **Interview Results** → Analyze candidate assessments
 
-## 🎨 Mock Data
+## 🎨 Development
 
-The prototype includes:
-- **8 sample jobs** with various roles and companies
-- **2 pre-applied applications** to demonstrate the dashboard
-- **Sample profile** with career goals and interests
+### Available Scripts
 
-All data is defined in `lib/mock-data.ts` and stored in localStorage.
-
-## 🔐 Authentication
-
-For prototype purposes:
-- Any email/password combination will log you in
-- No signup confirmation required
-- All users see the same mock data
-
-## 🗂️ Project Structure
-
-```
-app/
-├── auth/                 # Login and signup pages
-├── protected/            # Main app pages (require "login")
-│   ├── swipe/           # Job swiping interface
-│   ├── dashboard/       # Applications dashboard
-│   ├── profile/         # User profile
-│   └── onboarding/      # Simplified onboarding (no AI)
-components/
-├── bottom-nav.tsx       # Global navigation component
-└── ui/                  # shadcn/ui components
-lib/
-├── mock-data.ts         # All mock data and localStorage logic
-└── utils.ts             # Utility functions
+```bash
+pnpm dev          # Start development server
+pnpm build        # Build for production
+pnpm start        # Start production server
+pnpm lint         # Run ESLint
 ```
 
-## 🎭 Key Files
+### Mock Data
 
-### `lib/mock-data.ts`
-Contains all mock data and functions:
-- `mockJobs` - Sample job listings
-- `mockApplications` - Pre-applied jobs
-- `mockProfile` - User profile data
-- `getAvailableJobs()` - Get jobs not yet swiped
-- `applyToJob(job)` - Apply to a job
-- `discardJob(jobId)` - Discard a job
-- `getApplications()` - Get all applications
-- `getProfile()` - Get user profile
+Currently using mock data in `lib/mock-data.ts` for:
+- Sample job listings (8 jobs)
+- User profiles and applications
+- Company information
+- Quiz questions
 
-### Storage Keys
-Data is stored in localStorage with these keys:
-- `talash_jobs` - All available jobs
-- `talash_applications` - Jobs you've applied to
-- `talash_discarded` - Jobs you've passed on
-- `talash_profile` - Your profile information
+## 🎯 Key Features Breakdown
 
-## 🔄 Converting to Production
+### Phase 2 (Completed)
+✅ CV Generation with 4 templates  
+✅ Cover Letter Generator  
+✅ Pre-Screening Quiz system  
+✅ Company Onboarding wizard  
+✅ Enhanced Job Posting  
+✅ Quiz Question Builder  
+✅ AI Candidate Shortlisting  
+✅ Interview Results Analysis  
+✅ Tutorial Overlays  
+✅ Empty States  
+✅ Loading Skeletons  
 
-To convert this prototype to a production app with a real backend:
+### Phase 3A (Completed)
+✅ Navigation integration  
+✅ Tutorial overlays on key pages  
+✅ Empty states across all pages  
+✅ Loading skeletons  
+✅ Quick action links  
 
-1. **Set up Supabase** (or your backend of choice)
-2. **Restore authentication**:
-   - Update `app/auth/login/page.tsx`
-   - Update `app/auth/sign-up/page.tsx`
-   - Uncomment auth checks in `middleware.ts`
-3. **Replace mock data calls** in:
-   - `app/protected/swipe/page.tsx`
-   - `app/protected/dashboard/page.tsx`
-   - `app/protected/profile/page.tsx`
-4. **Add real APIs** for job fetching and applications
-5. **Implement real AI chat** in onboarding page
+## 📚 Documentation
 
-## 🛠️ Technologies
+- [Phase 2 Complete](docs/PHASE_2_COMPLETE.md) - All Phase 2 features documentation
+- [Phase 3A Complete](docs/PHASE_3A_COMPLETE.md) - Integration and polish documentation
+- [Project Structure](docs/PROJECT_STRUCTURE.md) - Detailed folder organization
 
-- **Next.js 16** - React framework with App Router
-- **TypeScript** - Type safety
-- **Tailwind CSS** - Styling
-- **shadcn/ui** - UI component library
-- **Framer Motion** - Animations
-- **localStorage** - Mock data persistence
+## 🔮 Roadmap
 
-## 📱 Usage
+### Phase 3B - Backend Integration
+- [ ] Real AI API integration (OpenAI/Anthropic)
+- [ ] Supabase data persistence
+- [ ] Email notifications
+- [ ] Real-time updates
 
-1. **Login**: Use any credentials (e.g., `test@example.com` / `password`)
-2. **Swipe**: Drag cards left to pass, right to apply (or use buttons)
-3. **Undo**: After discarding, you have 5 seconds to undo
-4. **Dashboard**: View all your applications
-5. **Profile**: See your career information
+### Phase 3C - Advanced Features
+- [ ] Video interview recording
+- [ ] Real-time chat system
+- [ ] Advanced analytics dashboard
+- [ ] Job recommendation algorithm
 
-## 🎨 Customization
+### Phase 3D - Mobile & Polish
+- [ ] Touch gesture improvements
+- [ ] PWA setup
+- [ ] Offline support
+- [ ] Performance optimization
 
-To modify the mock data, edit `lib/mock-data.ts`:
+## 🤝 Contributing
 
-```typescript
-// Add more jobs
-export const mockJobs: Job[] = [
-  {
-    id: '9',
-    title: 'Your New Job',
-    company: 'Your Company',
-    // ... more fields
-  },
-  // ... existing jobs
-]
-
-// Update profile
-export const mockProfile: Profile = {
-  full_name: 'Your Name',
-  email: 'your@email.com',
-  // ... more fields
-}
-```
+This is a university final year project. Contributions, issues, and feature requests are welcome!
 
 ## 📄 License
 
-This is a prototype project for demonstration purposes.
+This project is for educational purposes as part of a university final year project.
 
-## 🤝 Support
+## 👥 Author
 
-For questions or issues, please contact the development team.
+Created as part of a Final Year Project at University.
+
+## 🙏 Acknowledgments
+
+- shadcn/ui for beautiful UI components
+- Lucide for icons
+- Next.js team for the framework
+- Supabase for backend infrastructure
 
 ---
 
-**Note**: This is a prototype version using mock data. No real backend or authentication is implemented.
+**Note**: This is currently a prototype using mock data. Backend integration is planned for future phases.

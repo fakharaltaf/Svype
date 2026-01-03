@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
+import { Switch } from "@/components/ui/switch"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
-import { ArrowLeft, Plus, X } from "lucide-react"
+import { ArrowLeft, Plus, X, HelpCircle, Sparkles } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
 
@@ -17,6 +18,8 @@ export default function PostJobPage() {
   const { toast } = useToast()
   const [requirements, setRequirements] = useState<string[]>(["React", "TypeScript"])
   const [newRequirement, setNewRequirement] = useState("")
+  const [enablePreScreening, setEnablePreScreening] = useState(false)
+  const [enableAIInterview, setEnableAIInterview] = useState(false)
   const [formData, setFormData] = useState({
     title: "",
     location: "",
@@ -52,23 +55,23 @@ export default function PostJobPage() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-muted/20">
-      <header className="p-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
-        <div className="container mx-auto flex items-center gap-3">
-          <Button variant="ghost" size="icon" onClick={() => router.back()}>
+      <header className="px-4 sm:px-6 py-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
+        <div className="container mx-auto flex items-center gap-2 sm:gap-3">
+          <Button variant="ghost" size="icon" onClick={() => router.back()} className="flex-shrink-0">
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-2xl font-bold">Post a New Job</h1>
+          <h1 className="text-lg sm:text-xl md:text-2xl font-bold">Post a New Job</h1>
         </div>
       </header>
 
-      <main className="container mx-auto px-4 py-6 max-w-3xl">
-        <form onSubmit={handleSubmit} className="space-y-6">
+      <main className="container mx-auto px-4 sm:px-6 py-4 sm:py-6 max-w-3xl">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           {/* Basic Information */}
           <Card className="border-2">
             <CardHeader>
-              <CardTitle>Job Details</CardTitle>
+              <CardTitle className="text-base sm:text-lg">Job Details</CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3 sm:space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="title">Job Title</Label>
                 <Input
@@ -186,6 +189,89 @@ export default function PostJobPage() {
                   </Badge>
                 ))}
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Pre-Screening Options */}
+          <Card className="border-2">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                Pre-Screening
+                <Badge variant="secondary" className="gap-1">
+                  <Sparkles className="w-3 h-3" />
+                  AI Powered
+                </Badge>
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              {/* Quiz Toggle */}
+              <div className="flex items-start justify-between">
+                <div className="space-y-1 flex-1">
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="enable-quiz">Enable Pre-Screening Quiz</Label>
+                    <HelpCircle className="w-4 h-4 text-muted-foreground" />
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    Candidates will answer questions before their application is reviewed
+                  </p>
+                </div>
+                <Switch
+                  id="enable-quiz"
+                  checked={enablePreScreening}
+                  onCheckedChange={setEnablePreScreening}
+                />
+              </div>
+
+              {enablePreScreening && (
+                <div className="pl-4 border-l-2 border-primary/20 space-y-3">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={() => router.push("/company/add-quiz-questions")}
+                  >
+                    <Plus className="w-4 h-4 mr-2" />
+                    Add Quiz Questions
+                  </Button>
+                  <p className="text-xs text-muted-foreground">
+                    Create custom questions to assess candidates' skills and knowledge
+                  </p>
+                </div>
+              )}
+
+              {/* AI Interview Toggle */}
+              <div className="flex items-start justify-between">
+                <div className="space-y-1 flex-1">
+                  <div className="flex items-center gap-2">
+                    <Label htmlFor="enable-ai-interview">Enable AI Interview Analysis</Label>
+                    <Badge variant="secondary" className="text-xs">Premium</Badge>
+                  </div>
+                  <p className="text-sm text-muted-foreground">
+                    AI will conduct video interviews and analyze candidate responses
+                  </p>
+                </div>
+                <Switch
+                  id="enable-ai-interview"
+                  checked={enableAIInterview}
+                  onCheckedChange={setEnableAIInterview}
+                />
+              </div>
+
+              {enableAIInterview && (
+                <div className="pl-4 border-l-2 border-primary/20">
+                  <div className="p-4 bg-primary/5 rounded-lg border border-primary/20">
+                    <p className="text-sm">
+                      <strong>AI Interview Features:</strong>
+                    </p>
+                    <ul className="text-sm text-muted-foreground mt-2 space-y-1">
+                      <li>• Eye movement tracking</li>
+                      <li>• Response timing analysis</li>
+                      <li>• Confidence scoring</li>
+                      <li>• Behavioral pattern detection</li>
+                    </ul>
+                  </div>
+                </div>
+              )}
             </CardContent>
           </Card>
 

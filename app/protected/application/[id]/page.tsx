@@ -84,38 +84,38 @@ export default function ApplicationDetailsPage() {
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-background to-muted/20 pb-20">
       {/* Header */}
-      <header className="p-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
-        <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" onClick={() => router.back()}>
+      <header className="px-4 sm:px-6 py-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <Button variant="ghost" size="icon" onClick={() => router.back()} className="flex-shrink-0">
             <ChevronLeft className="w-5 h-5" />
           </Button>
-          <div className="flex-1">
-            <h1 className="text-xl font-bold">Application Details</h1>
-            <p className="text-sm text-muted-foreground">Track your progress</p>
+          <div className="flex-1 min-w-0">
+            <h1 className="text-lg sm:text-xl font-bold">Application Details</h1>
+            <p className="text-xs sm:text-sm text-muted-foreground">Track your progress</p>
           </div>
         </div>
       </header>
 
       {/* Content */}
-      <div className="flex-1 p-4 space-y-4 max-w-4xl mx-auto w-full">
+      <div className="flex-1 px-4 sm:px-6 py-4 space-y-3 sm:space-y-4 max-w-4xl mx-auto w-full">
         {/* Job Card */}
         <Card className="border-2">
-          <CardContent className="p-6">
-            <div className="flex items-start gap-4 mb-4">
-              <Avatar className="w-16 h-16 border-2">
+          <CardContent className="p-4 sm:p-6">
+            <div className="flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-4 mb-4">
+              <Avatar className="w-12 h-12 sm:w-16 sm:h-16 border-2 flex-shrink-0">
                 <AvatarFallback className="bg-gradient-to-br from-primary to-primary/60 text-primary-foreground text-xl">
                   {job.company.charAt(0)}
                 </AvatarFallback>
               </Avatar>
-              <div className="flex-1">
-                <h2 className="text-2xl font-bold mb-1">{job.title}</h2>
-                <p className="text-lg text-muted-foreground font-medium">{job.company}</p>
+              <div className="flex-1 min-w-0">
+                <h2 className="text-xl sm:text-2xl font-bold mb-1">{job.title}</h2>
+                <p className="text-base sm:text-lg text-muted-foreground font-medium truncate">{job.company}</p>
               </div>
-              <Badge className={`${getStatusColor(applicationStatus)} font-medium`}>
+              <Badge className={`${getStatusColor(applicationStatus)} font-medium text-xs sm:text-sm flex-shrink-0`}>
                 {applicationStatus}
               </Badge>
             </div>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
               <Badge variant="outline" className="gap-1">
                 <MapPin className="w-3 h-3" />
                 {job.location}
@@ -134,21 +134,21 @@ export default function ApplicationDetailsPage() {
 
         {/* Tabs */}
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-3">
+          <TabsList className="grid w-full grid-cols-3 text-xs sm:text-sm">
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="timeline">Timeline</TabsTrigger>
             <TabsTrigger value="notes">Notes</TabsTrigger>
           </TabsList>
 
           {/* Overview Tab */}
-          <TabsContent value="overview" className="space-y-4">
+          <TabsContent value="overview" className="space-y-3 sm:space-y-4">
             <Card className="border-2">
-              <CardContent className="p-6 space-y-4">
-                <h3 className="text-lg font-bold">Application Information</h3>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <span className="text-muted-foreground">Applied On</span>
-                    <span className="font-medium">{formatDate(applied_at)}</span>
+              <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                <h3 className="text-base sm:text-lg font-bold">Application Information</h3>
+                <div className="space-y-2 sm:space-y-3">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs sm:text-sm text-muted-foreground">Applied On</span>
+                    <span className="text-xs sm:text-sm font-medium text-right">{formatDate(applied_at)}</span>
                   </div>
                   <div className="flex items-center justify-between">
                     <span className="text-muted-foreground">Status</span>
@@ -165,20 +165,20 @@ export default function ApplicationDetailsPage() {
             </Card>
 
             <Card className="border-2">
-              <CardContent className="p-6 space-y-4">
-                <h3 className="text-lg font-bold">Job Description</h3>
-                <p className="text-muted-foreground leading-relaxed">{job.description}</p>
+              <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                <h3 className="text-base sm:text-lg font-bold">Job Description</h3>
+                <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">{job.description}</p>
               </CardContent>
             </Card>
 
             <Card className="border-2">
-              <CardContent className="p-6 space-y-4">
-                <h3 className="text-lg font-bold">Requirements</h3>
+              <CardContent className="p-4 sm:p-6 space-y-3 sm:space-y-4">
+                <h3 className="text-base sm:text-lg font-bold">Requirements</h3>
                 <ul className="space-y-2">
                   {job.requirements.map((req, index) => (
                     <li key={index} className="flex items-start gap-2">
-                      <CheckCircle2 className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                      <span className="text-muted-foreground">{req}</span>
+                      <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5 text-primary mt-0.5 flex-shrink-0" />
+                      <span className="text-xs sm:text-sm text-muted-foreground">{req}</span>
                     </li>
                   ))}
                 </ul>
@@ -187,17 +187,17 @@ export default function ApplicationDetailsPage() {
           </TabsContent>
 
           {/* Timeline Tab */}
-          <TabsContent value="timeline" className="space-y-4">
+          <TabsContent value="timeline" className="space-y-3 sm:space-y-4">
             <Card className="border-2">
-              <CardContent className="p-6">
-                <h3 className="text-lg font-bold mb-6">Application Timeline</h3>
-                <div className="space-y-6">
+              <CardContent className="p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-bold mb-4 sm:mb-6">Application Timeline</h3>
+                <div className="space-y-4 sm:space-y-6">
                   {timeline.map((item, index) => (
-                    <div key={index} className="flex gap-4">
+                    <div key={index} className="flex gap-3 sm:gap-4">
                       <div className="flex flex-col items-center">
-                        <div className={`w-10 h-10 rounded-full flex items-center justify-center ${getStatusColor(item.status)}`}>
-                          {item.status === "APPLIED" && <FileText className="w-5 h-5" />}
-                          {item.status === "SHORTLISTED" && <TrendingUp className="w-5 h-5" />}
+                        <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center ${getStatusColor(item.status)}`}>
+                          {item.status === "APPLIED" && <FileText className="w-4 h-4 sm:w-5 sm:h-5" />}
+                          {item.status === "SHORTLISTED" && <TrendingUp className="w-4 h-4 sm:w-5 sm:h-5" />}
                           {item.status === "INTERVIEW" && <Calendar className="w-5 h-5" />}
                           {item.status === "REJECTED" && <span className="text-lg">✕</span>}
                         </div>

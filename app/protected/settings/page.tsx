@@ -53,21 +53,21 @@ export default function SettingsPage() {
 
   return (
     <div className="flex flex-col min-h-svh bg-gradient-to-b from-background to-muted/20 pb-20">
-      <header className="p-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
-        <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" onClick={() => router.back()}>
+      <header className="px-4 sm:px-6 py-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
+        <div className="flex items-center gap-2 sm:gap-3">
+          <Button variant="ghost" size="icon" onClick={() => router.back()} className="flex-shrink-0">
             <ArrowLeft className="w-5 h-5" />
           </Button>
-          <h1 className="text-2xl font-bold">Settings</h1>
+          <h1 className="text-xl sm:text-2xl font-bold">Settings</h1>
         </div>
       </header>
 
-      <main className="p-4 space-y-4">
+      <main className="px-4 sm:px-6 py-4 space-y-3 sm:space-y-4">
         {/* Notifications */}
         <Card className="border-2">
           <CardHeader>
-            <CardTitle className="text-lg flex items-center gap-2">
-              <Bell className="w-5 h-5 text-primary" />
+            <CardTitle className="text-base sm:text-lg flex items-center gap-2">
+              <Bell className="w-4 h-4 sm:w-5 sm:h-5 text-primary" />
               Notifications
             </CardTitle>
           </CardHeader>
@@ -195,8 +195,8 @@ export default function SettingsPage() {
 
         {/* App Info */}
         <div className="text-center text-sm text-muted-foreground pt-4 pb-8">
-          <p>Talash v1.0.0</p>
-          <p className="text-xs mt-1">© 2026 Talash. All rights reserved.</p>
+          <p>SVYPE v1.0.0</p>
+          <p className="text-xs mt-1">© 2026 SVYPE. All rights reserved.</p>
         </div>
       </main>
     </div>

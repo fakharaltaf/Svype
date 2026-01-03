@@ -7,6 +7,9 @@ import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
 import { X, Check, MapPin, Calendar, Briefcase, DollarSign, ChevronUp, ChevronDown, Undo2, Sparkles, TrendingUp } from "lucide-react"
 import { getAvailableJobs, applyToJob, discardJob, Job, initializeMockData, undoDiscard, resetMockData } from "@/lib/mock-data"
+import { TutorialOverlay, SWIPE_TUTORIAL } from "@/components/tutorial-overlay"
+import { EmptyState } from "@/components/empty-state"
+import { JobCardSkeleton } from "@/components/loading-skeletons"
 
 export default function SwipePage() {
   const [jobs, setJobs] = useState<Job[]>([])
@@ -209,14 +212,11 @@ export default function SwipePage() {
 
   if (jobs.length === 0) {
     return (
-      <div className="flex flex-col h-screen bg-background items-center justify-center p-4">
-        <Card className="w-full max-w-md p-8 text-center">
-          <h2 className="text-xl font-semibold mb-4">No More Jobs</h2>
-          <p className="text-muted-foreground mb-6">
-            You've seen all available jobs. Check back later for new opportunities!
-          </p>
-          <Button onClick={handleReset}>Refresh</Button>
-        </Card>
+      <div className="flex flex-col h-screen bg-gradient-to-b from-background to-muted/20 items-center justify-center p-4">
+        <EmptyState 
+          type="no-jobs" 
+          onAction={handleReset}
+        />
       </div>
     )
   }
@@ -225,6 +225,8 @@ export default function SwipePage() {
 
   return (
     <div className="flex flex-col h-screen bg-gradient-to-b from-background to-muted/20 overflow-hidden">
+      <TutorialOverlay tutorialKey="swipe" steps={SWIPE_TUTORIAL} />
+      
       {/* Job Counter */}
       <div className="absolute top-4 left-1/2 transform -translate-x-1/2 z-10">
         <Badge variant="secondary" className="px-4 py-2 text-sm font-medium shadow-lg">

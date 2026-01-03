@@ -4,10 +4,13 @@ import { useState, useEffect } from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Briefcase, Calendar, CheckCircle2, Clock, MapPin, DollarSign, TrendingUp, Sparkles } from "lucide-react"
+import { Briefcase, Calendar, CheckCircle2, Clock, MapPin, DollarSign, TrendingUp, Sparkles, FileText, FileEdit } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { initializeMockData, getApplications, type Application } from "@/lib/mock-data"
+import { EmptyState } from "@/components/empty-state"
+import { DashboardStatsSkeleton, JobListItemSkeleton } from "@/components/loading-skeletons"
+import { TutorialOverlay, DASHBOARD_TUTORIAL } from "@/components/tutorial-overlay"
 
 export default function DashboardPage() {
   const [applications, setApplications] = useState<Application[]>([])
@@ -83,9 +86,9 @@ export default function DashboardPage() {
 
   return (
     <div className="flex flex-col min-h-svh bg-gradient-to-b from-background to-muted/20 pb-20">
-      <header className="p-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
+      <header className="px-4 sm:px-6 py-4 border-b bg-background/95 backdrop-blur-sm sticky top-0 z-10">
         <div className="flex items-center justify-between mb-4">
-          <h1 className="text-2xl font-bold">Applications</h1>
+          <h1 className="text-xl sm:text-2xl font-bold">Applications</h1>
           <Button 
             variant="outline" 
             size="sm" 
@@ -99,10 +102,10 @@ export default function DashboardPage() {
         
         {/* Stats Overview */}
         {applications.length > 0 && (
-          <div className="grid grid-cols-3 gap-3 mt-4">
-            <div className="bg-primary/10 rounded-lg p-3 text-center">
-              <div className="text-2xl font-bold text-primary">{applications.length}</div>
-              <div className="text-xs text-muted-foreground">Total</div>
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-4">
+            <div className="bg-primary/10 rounded-lg p-2 sm:p-3 text-center">
+              <div className="text-xl sm:text-2xl font-bold text-primary">{applications.length}</div>
+              <div className="text-[10px] sm:text-xs text-muted-foreground">Total</div>
             </div>
             <div className="bg-green-500/10 rounded-lg p-3 text-center">
               <div className="text-2xl font-bold text-green-600">{activeApps.length}</div>
@@ -114,11 +117,33 @@ export default function DashboardPage() {
             </div>
           </div>
         )}
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-2 gap-2 sm:gap-3 mt-4">
+          <Button 
+            variant="outline" 
+            className="h-auto flex-col gap-1 sm:gap-2 p-3 sm:p-4 hover:bg-primary/5 hover:border-primary"
+            onClick={() => router.push("/protected/generate-cv")}
+          >
+            <FileText className="w-5 h-5 text-primary" />
+            <span className="text-xs font-medium">Generate CV</span>
+          </Button>
+          <Button 
+            variant="outline" 
+            className="h-auto flex-col gap-2 p-4 hover:bg-primary/5 hover:border-primary"
+            onClick={() => router.push("/protected/generate-cover-letter")}
+          >
+            <FileEdit className="w-5 h-5 text-primary" />
+            <span className="text-xs font-medium">Cover Letter</span>
+          </Button>
+        </div>
       </header>
 
-      <main className="p-4 flex-1">
+      <TutorialOverlay tutorialKey="dashboard" steps={DASHBOARD_TUTORIAL} />
+
+      <main className="px-4 sm:px-6 py-4 flex-1">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-3 mb-6">
+          <TabsList className="grid w-full grid-cols-3 mb-4 sm:mb-6">
             <TabsTrigger value="all">
               All ({applications.length})
             </TabsTrigger>
@@ -134,18 +159,7 @@ export default function DashboardPage() {
             {loading ? (
               <div className="space-y-4">
                 {[1, 2, 3].map((i) => (
-                  <Card key={i} className="overflow-hidden border-2 animate-pulse">
-                    <CardContent className="p-4">
-                      <div className="flex justify-between items-start mb-3">
-                        <div className="space-y-2 flex-1">
-                          <div className="h-5 bg-muted rounded w-3/4"></div>
-                          <div className="h-4 bg-muted rounded w-1/2"></div>
-                        </div>
-                        <div className="h-6 w-20 bg-muted rounded"></div>
-                      </div>
-                      <div className="h-4 bg-muted rounded w-full mt-4"></div>
-                    </CardContent>
-                  </Card>
+                  <JobListItemSkeleton key={i} />
                 ))}
               </div>
             ) : filteredApplications.length > 0 ? (
@@ -155,11 +169,11 @@ export default function DashboardPage() {
                   className="overflow-hidden border-2 hover:border-primary/50 transition-all hover:shadow-lg cursor-pointer"
                   onClick={() => router.push(`/protected/application/${app.id}`)}
                 >
-                  <CardContent className="p-5">
-                    <div className="flex justify-between items-start mb-3">
-                      <div className="flex-1">
-                        <h3 className="font-bold text-lg mb-1">{app.job.title}</h3>
-                        <p className="text-muted-foreground font-medium">{app.job.company}</p>
+                  <CardContent className="p-4 sm:p-5">
+                    <div className="flex justify-between items-start mb-3 gap-2">
+                      <div className="flex-1 min-w-0">
+                        <h3 className="font-bold text-base sm:text-lg mb-1 truncate">{app.job.title}</h3>
+                        <p className="text-sm sm:text-base text-muted-foreground font-medium truncate">{app.job.company}</p>
                       </div>
                       <Badge 
                         className={`flex gap-1.5 items-center font-medium ${getStatusColor(app.applicationStatus)}`}
@@ -184,41 +198,24 @@ export default function DashboardPage() {
                       </Badge>
                     </div>
 
-                    <div className="flex items-center justify-between text-sm text-muted-foreground pt-4 border-t">
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 sm:gap-0 text-xs sm:text-sm text-muted-foreground pt-4 border-t">
                       <div className="flex items-center gap-1">
-                        <MapPin className="w-4 h-4" />
-                        {app.job.location}
+                        <MapPin className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <span className="truncate">{app.job.location}</span>
                       </div>
                       <div className="flex items-center gap-1">
-                        <Clock className="w-4 h-4" />
-                        Applied {formatDate(app.applied_at)}
+                        <Clock className="w-3 h-3 sm:w-4 sm:h-4" />
+                        <span className="whitespace-nowrap">Applied {formatDate(app.applied_at)}</span>
                       </div>
                     </div>
                   </CardContent>
                 </Card>
               ))
             ) : (
-              <div className="text-center py-20">
-                <div className="bg-gradient-to-br from-primary/20 to-primary/5 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                  <Briefcase className="w-10 h-10 text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2">
-                  {activeTab === 'all' ? 'No applications yet' : 
-                   activeTab === 'active' ? 'No active applications' : 
-                   'No closed applications'}
-                </h3>
-                <p className="text-muted-foreground mb-6">
-                  {activeTab === 'all' 
-                    ? 'Start swiping to find your perfect role!' 
-                    : `You don't have any ${activeTab} applications.`}
-                </p>
-                {activeTab === 'all' && (
-                  <Button onClick={() => router.push("/protected/swipe")} size="lg" className="gap-2">
-                    <TrendingUp className="w-5 h-5" />
-                    Start Swiping
-                  </Button>
-                )}
-              </div>
+              <EmptyState 
+                type="no-applications" 
+                onAction={() => router.push("/protected/swipe")} 
+              />
             )}
           </TabsContent>
         </Tabs>

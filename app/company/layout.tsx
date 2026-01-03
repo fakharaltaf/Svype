@@ -1,7 +1,7 @@
 import type { Metadata } from "next"
 
 export const metadata: Metadata = {
-  title: "Company Portal - Talash",
+  title: "Company Portal - SVYPE",
   description: "Manage your company job postings and review applicants",
 }
 

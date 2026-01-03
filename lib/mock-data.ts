@@ -138,12 +138,14 @@ export const mockApplications: Application[] = [
     job: mockJobs[0],
     status: 'active',
     applied_at: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000).toISOString(),
+    applicationStatus: 'APPLIED',
   },
   {
     id: 'app-2',
     job: mockJobs[4],
     status: 'active',
     applied_at: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    applicationStatus: 'SHORTLISTED',
   },
 ];
 
@@ -159,10 +161,10 @@ export const mockProfile: Profile = {
 
 // Local storage keys
 const STORAGE_KEYS = {
-  JOBS: 'talash_jobs',
-  APPLICATIONS: 'talash_applications',
-  DISCARDED: 'talash_discarded',
-  PROFILE: 'talash_profile',
+  JOBS: 'svype_jobs',
+  APPLICATIONS: 'svype_applications',
+  DISCARDED: 'svype_discarded',
+  PROFILE: 'svype_profile',
 };
 
 // Initialize local storage with mock data if empty
