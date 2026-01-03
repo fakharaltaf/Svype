@@ -31,7 +31,7 @@
 | **Styling** | Tailwind CSS + shadcn/ui |
 | **Database** | Supabase (PostgreSQL) |
 | **Auth** | Supabase Auth |
-| **Package Manager** | pnpm |
+| **Package Manager** | npm |
 | **Icons** | Lucide React |
 | **Animations** | tw-animate-css |
 
