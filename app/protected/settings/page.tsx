@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Switch } from "@/components/ui/switch"
@@ -8,23 +8,38 @@ import { Label } from "@/components/ui/label"
 import { ArrowLeft, Bell, Moon, Globe, Shield, Trash2 } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { useToast } from "@/hooks/use-toast"
+import { useTheme } from "next-themes"
 
 export default function SettingsPage() {
   const router = useRouter()
   const { toast } = useToast()
+  const { theme, setTheme } = useTheme()
+  const [mounted, setMounted] = useState(false)
   const [settings, setSettings] = useState({
     notifications: true,
     emailAlerts: true,
     jobRecommendations: true,
-    darkMode: false,
     language: "English",
   })
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleToggle = (key: keyof typeof settings) => {
     setSettings((prev) => ({ ...prev, [key]: !prev[key] }))
     toast({
       title: "Setting updated",
       description: "Your preferences have been saved.",
+    })
+  }
+
+  const handleThemeToggle = () => {
+    const newTheme = theme === "dark" ? "light" : "dark"
+    setTheme(newTheme)
+    toast({
+      title: "Theme updated",
+      description: `Switched to ${newTheme} mode.`,
     })
   }
 
@@ -105,8 +120,9 @@ export default function SettingsPage() {
                 <p className="text-sm text-muted-foreground">Toggle dark theme</p>
               </div>
               <Switch
-                checked={settings.darkMode}
-                onCheckedChange={() => handleToggle("darkMode")}
+                checked={mounted && theme === "dark"}
+                onCheckedChange={handleThemeToggle}
+                disabled={!mounted}
               />
             </div>
           </CardContent>

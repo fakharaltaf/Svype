@@ -20,20 +20,6 @@ export default function Page() {
     // For prototype: Accept any credentials and go directly to swipe page
     router.push("/protected/swipe")
   }
-        .single()
-
-      if (profile?.onboarding_completed) {
-        router.push("/protected/swipe")
-      } else {
-        router.push("/protected/onboarding")
-      }
-      */
-    } catch (error: unknown) {
-      setError(error instanceof Error ? error.message : "An error occurred")
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
   return (
     <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10 bg-muted/30">
@@ -81,6 +67,11 @@ export default function Page() {
                 Don&apos;t have an account?{" "}
                 <Link href="/auth/sign-up" className="underline underline-offset-4 text-primary font-semibold">
                   Sign up
+                </Link>
+              </div>
+              <div className="mt-4 pt-4 border-t text-center text-sm">
+                <Link href="/auth/company-login" className="text-muted-foreground hover:text-foreground">
+                  Are you a company? Login here →
                 </Link>
               </div>
             </form>

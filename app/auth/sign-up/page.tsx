@@ -18,8 +18,8 @@ export default function Page() {
 
   const handleSignUp = (e: React.FormEvent) => {
     e.preventDefault()
-    // For prototype: Accept any credentials and go directly to swipe page
-    router.push("/protected/swipe")
+    // For prototype: Accept any credentials and go to onboarding choice
+    router.push("/protected/onboarding-choice")
   }
 
   return (
@@ -80,6 +80,11 @@ export default function Page() {
                 Already have an account?{" "}
                 <Link href="/auth/login" className="underline underline-offset-4 text-primary font-semibold">
                   Login
+                </Link>
+              </div>
+              <div className="mt-4 pt-4 border-t text-center text-sm">
+                <Link href="/auth/company-sign-up" className="text-muted-foreground hover:text-foreground">
+                  Register as a company instead →
                 </Link>
               </div>
             </form>

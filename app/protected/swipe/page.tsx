@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { X, Check, MapPin, Calendar, Briefcase, DollarSign, ChevronUp, ChevronDown, Undo2 } from "lucide-react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog"
+import { X, Check, MapPin, Calendar, Briefcase, DollarSign, ChevronUp, ChevronDown, Undo2, Sparkles, TrendingUp } from "lucide-react"
 import { getAvailableJobs, applyToJob, discardJob, Job, initializeMockData, undoDiscard, resetMockData } from "@/lib/mock-data"
 
 export default function SwipePage() {
@@ -16,6 +17,8 @@ export default function SwipePage() {
   const [showDetails, setShowDetails] = useState(false)
   const [lastDiscarded, setLastDiscarded] = useState<Job | null>(null)
   const [showUndo, setShowUndo] = useState(false)
+  const [showAppliedDialog, setShowAppliedDialog] = useState(false)
+  const [appliedJob, setAppliedJob] = useState<Job | null>(null)
   const cardRef = useRef<HTMLDivElement>(null)
   const undoTimerRef = useRef<NodeJS.Timeout | null>(null)
 
@@ -127,6 +130,8 @@ export default function SwipePage() {
     if (currentJob) {
       applyToJob(currentJob)
       setJobs(jobs.filter((_, index) => index !== currentIndex))
+      setAppliedJob(currentJob)
+      setShowAppliedDialog(true)
     }
     setShowDetails(false)
   }
@@ -231,7 +236,7 @@ export default function SwipePage() {
       <div className="flex-1 flex items-center justify-center p-4 relative">
         <div
           ref={cardRef}
-          className="relative w-full max-w-md h-[85vh] touch-none"
+          className="relative w-full max-w-md h-[75vh] touch-none mx-auto"
           style={{
             transform: `translate(${dragOffset.x}px, ${dragOffset.y}px) rotate(${dragOffset.x * 0.05}deg)`,
             transition: isDragging ? "none" : "transform 0.3s ease-out",
@@ -271,7 +276,7 @@ export default function SwipePage() {
 
           <Card className="w-full h-full overflow-hidden shadow-2xl bg-card/95 backdrop-blur-sm">
             {/* Card Content */}
-            <div className="h-full flex flex-col p-6 relative">
+            <div className="h-full flex flex-col p-6 relative overflow-y-auto">
               {/* Swipe Indicator */}
               <div className="absolute top-4 right-4 text-muted-foreground/50 text-xs">
                 ↑ Details
@@ -325,32 +330,29 @@ export default function SwipePage() {
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-3">
+              <div className="flex gap-3 w-full">
                 <Button
                   variant="outline"
-                  className="flex-1 border-red-200 hover:bg-red-50 hover:border-red-300"
+                  className="flex-1 min-w-0 border-red-200 hover:bg-red-50 hover:border-red-300"
                   size="lg"
                   onClick={handleDiscard}
                 >
-                  <X className="w-5 h-5 mr-2" />
-                  Pass
+                  <X className="w-5 h-5 flex-shrink-0" />
                 </Button>
                 <Button
                   variant="outline"
-                  className="flex-1"
+                  className="flex-1 min-w-0"
                   size="lg"
                   onClick={() => setShowDetails(true)}
                 >
-                  <ChevronUp className="w-5 h-5 mr-2" />
-                  Details
+                  <ChevronUp className="w-5 h-5 flex-shrink-0" />
                 </Button>
                 <Button
-                  className="flex-1 bg-green-600 hover:bg-green-700"
+                  className="flex-1 min-w-0 bg-green-600 hover:bg-green-700"
                   size="lg"
                   onClick={handleApply}
                 >
-                  <Check className="w-5 h-5 mr-2" />
-                  Apply
+                  <Check className="w-5 h-5 flex-shrink-0" />
                 </Button>
               </div>
             </div>
@@ -365,16 +367,25 @@ export default function SwipePage() {
 
       {/* Undo Button */}
       {showUndo && lastDiscarded && (
-        <div className="fixed bottom-24 left-1/2 transform -translate-x-1/2 z-50 animate-in slide-in-from-bottom-5 duration-300">
-          <Button
-            onClick={handleUndo}
-            variant="secondary"
-            size="lg"
-            className="shadow-2xl bg-background border-2 border-primary hover:bg-muted"
-          >
-            <Undo2 className="w-5 h-5 mr-2" />
-            Undo Pass on {lastDiscarded.company}
-          </Button>
+        <div className="fixed bottom-32 left-1/2 transform -translate-x-1/2 z-50 animate-in slide-in-from-bottom-5 duration-300">
+          <div className="bg-gradient-to-r from-primary/90 to-primary backdrop-blur-lg rounded-full shadow-lg border border-primary-foreground/10">
+            <Button
+              onClick={handleUndo}
+              variant="ghost"
+              size="sm"
+              className="text-primary-foreground hover:bg-white/10 hover:text-primary-foreground rounded-full px-4 py-2 h-auto"
+            >
+              <div className="flex items-center gap-2">
+                <div className="w-6 h-6 rounded-full bg-white/20 flex items-center justify-center">
+                  <Undo2 className="w-3 h-3" />
+                </div>
+                <div className="flex flex-col items-start">
+                  <span className="text-[10px] opacity-90">Undo pass</span>
+                  <span className="font-semibold text-xs">{lastDiscarded.company}</span>
+                </div>
+              </div>
+            </Button>
+          </div>
         </div>
       )}
 
@@ -475,6 +486,83 @@ export default function SwipePage() {
           </div>
         </div>
       </div>
+
+      {/* Applied Success Dialog */}
+      <Dialog open={showAppliedDialog} onOpenChange={setShowAppliedDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="flex justify-center mb-4">
+              <div className="w-16 h-16 rounded-full bg-green-100 dark:bg-green-900/20 flex items-center justify-center">
+                <Check className="w-8 h-8 text-green-600 dark:text-green-400" />
+              </div>
+            </div>
+            <DialogTitle className="text-center text-2xl">Application Sent! 🎉</DialogTitle>
+            <DialogDescription className="text-center pt-2">
+              Your application has been successfully submitted to
+            </DialogDescription>
+          </DialogHeader>
+          
+          {appliedJob && (
+            <div className="space-y-4 py-4">
+              {/* Job Info Card */}
+              <div className="bg-muted/50 rounded-lg p-4 space-y-2">
+                <div className="flex items-start justify-between">
+                  <div>
+                    <h3 className="font-bold text-lg">{appliedJob.title}</h3>
+                    <p className="text-muted-foreground">{appliedJob.company}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                  <MapPin className="w-4 h-4" />
+                  <span>{appliedJob.location}</span>
+                </div>
+              </div>
+
+              {/* Next Steps */}
+              <div className="space-y-2">
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Sparkles className="w-3 h-3 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">We&apos;ll notify you</p>
+                    <p className="text-xs text-muted-foreground">When the employer views your application</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <TrendingUp className="w-3 h-3 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium">Keep swiping</p>
+                    <p className="text-xs text-muted-foreground">More opportunities are waiting for you</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-2 pt-2">
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => setShowAppliedDialog(false)}
+                >
+                  Continue Swiping
+                </Button>
+                <Button
+                  className="flex-1"
+                  onClick={() => {
+                    setShowAppliedDialog(false)
+                    window.location.href = '/protected/dashboard'
+                  }}
+                >
+                  View Applications
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
